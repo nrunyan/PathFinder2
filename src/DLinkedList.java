@@ -28,6 +28,14 @@ public class DLinkedList {
         }
         return curr.getValue();
     }
+    public Object dequeue(){
+        Object result = getLast();
+        Node prevLast = this.last.getPrev();
+        this.last = prevLast;
+        prevLast.setNext(null);
+        this.size--;
+        return result;
+    }
     public Object getFirst() {
         return this.root.getNext().getValue();
     }
@@ -51,6 +59,11 @@ public class DLinkedList {
     }
     public Object remove(int index){
         Object result = get(index);
+
+        if(index == size-1){
+            dequeue();
+            return result;
+        }
         Node curr = this.root;
         for(int i = 0; i < index+1; i++){
             if(curr.getNext() != null){
@@ -84,6 +97,9 @@ public class DLinkedList {
         this.root.setNext(newNode);
         newNode.setNext(next);
     }
+    public boolean isEmpty(){
+        return this.root.getNext() == null;
+    }
 
     public static void main(String[] args) {
         DLinkedList dLinkedList = new DLinkedList();
@@ -98,7 +114,7 @@ public class DLinkedList {
         System.out.println(list.size);
         System.out.println("");
         for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
+            System.out.print(list.get(i));
         }
         System.out.println("");
         int first = (int) list.pop();
@@ -106,7 +122,7 @@ public class DLinkedList {
         System.out.println("");
 
         for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
+            System.out.print(list.get(i));
         }
         System.out.println("");
         list.push(5);
@@ -117,19 +133,27 @@ public class DLinkedList {
             list.push(i);
         }
         for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
+            System.out.print(list.get(i));
         }
         System.out.println("");
         System.out.println(list.getFirst());
         System.out.println("");
         System.out.println(list.getLast());
-        System.out.println("adad");
+        System.out.println("");
         list.remove(3);
         list.remove(0);
 
         for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
+            System.out.print(list.get(i));
         }
+        System.out.println("");
+        System.out.println(list.size);
+        System.out.println("");
+        list.remove(7);
+        System.out.println(list.getLast());
+        System.out.println("");
+        list.dequeue();
+        System.out.println(list.getLast());
 
     }
 }
