@@ -2,28 +2,6 @@ public class MinHeap {
     public Keyed[] arr = new Keyed[Short.MAX_VALUE];
     public int size = 0;
 
-    public static void main(String[] args) {
-        MinHeap heap = new MinHeap();
-        heap.insert(new Object(), 7);
-        heap.insert(new Object(), 2);
-        heap.insert(new Object(), 3);
-        heap.insert(new Object(), 5);
-        heap.insert(new Object(), 6);
-        heap.insert(new Object(), 1);
-        heap.insert(new Object(), 4);
-
-        heap.print();
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-        System.out.println(heap.extractMin());
-    }
-
-
     public void insert(Object datum, int key) {
         // The Keyed class just holds whatever object is inserted while
         // attaching a key property we can use for heap ordering.
@@ -39,6 +17,9 @@ public class MinHeap {
 
     /**
      * Bubble an element UP the heap.
+     * Current implementation is wrong: need to expect the id of the item,
+     * not the index. Outside world doesn't know the index. Then need to search
+     * for the appropriate index.
      */
     public void decreaseKey(int index, int key) {
         if (index >= size) {
@@ -48,6 +29,7 @@ public class MinHeap {
             System.out.println("Error: key provided to decreaseKey is greater" +
                     " than the existing key of that element.");
         }
+        // TODO: find the index i where object x occurs
         arr[index].key = key;
         int i = index;
         while (i > 0 && arr[this.parent(i)].key > arr[i].key) {
@@ -88,7 +70,7 @@ public class MinHeap {
         arr[0] = arr[this.size - 1];
         this.size--;
         minHeapify(0);
-        return removed.key;
+        return removed.data;
     }
 
     public void swap(int i, int j) {
@@ -120,6 +102,10 @@ public class MinHeap {
         }
     }
 
+//    public int search(Object keyed) {
+//
+//    }
+
 
     private static class Keyed {
         public Object data;
@@ -129,5 +115,27 @@ public class MinHeap {
             this.data = data;
             this.key = key;
         }
+    }
+
+    public static void main(String[] args) {
+        MinHeap heap = new MinHeap();
+        heap.insert(7, 7);
+        heap.insert(2, 2);
+        heap.insert(3, 3);
+        heap.insert(5, 5);
+        heap.insert(6, 6);
+        heap.insert(1, 1);
+        heap.insert(4, 4);
+
+//        heap.print();
+//        heap.decreaseKey(2, 0);
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
+        System.out.println(heap.extractMin());
     }
 }

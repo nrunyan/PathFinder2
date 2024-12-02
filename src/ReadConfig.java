@@ -32,7 +32,7 @@ public class ReadConfig {
     }
 
 //    public static void main(String[] args) {
-//        char[][] twoD = parseFile("testCases/simple.txt");
+//        char[][] twoD = parseFile("testCases/case-a.txt");
 //        for (int i = 0; i < 5; i++){
 //            for (int j = 0; j < 7 ; j++){
 //                System.out.print(twoD[i][j]);

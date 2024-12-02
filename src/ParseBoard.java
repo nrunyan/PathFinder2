@@ -2,30 +2,44 @@ import java.util.*;
 
 public class ParseBoard {
     public List<List<Integer>> adjecency=new ArrayList<>();
-    private int amountOfNodes;
+    public int[] itemVertices;
+    public int itemCount = 0;
+    public int amountOfNodes;
     private int colunmSize;
     private int rowSize;
     private final char emptySpace='.';
     private final char items='x';
     private final char obsticles='#';
     public ParseBoard(char[][] board, int amountOfNodes, int colunmSize, int rowSize){
-        this.amountOfNodes=amountOfNodes;
-        this.colunmSize=colunmSize;
-        this.rowSize=rowSize;
+        this.rowSize = board.length;
+        this.colunmSize = board.length > 0 ? board[0].length : 0;
+        this.amountOfNodes = this.rowSize * this.colunmSize;
+//        this.amountOfNodes=amountOfNodes;
+//        this.colunmSize=colunmSize;
+//        this.rowSize=rowSize;
+        // Store the locations of items so we know what we're looking for.
+        this.itemVertices = new int[this.amountOfNodes];
+        // Initialize the array entries to -1 which signifies no item.
+        for (int i = 0; i < this.amountOfNodes; i++) {
+            itemVertices[i] = -1;
+        }
         createAdjecencyList(board);
     }
     private void createAdjecencyList(char [][] board){
         for(int i=0;i<amountOfNodes;i++){
             adjecency.add(new ArrayList<>());
         }
-        for(int row=0;row<colunmSize;row++){
+        for(int row=0;row<rowSize;row++){
             for(int colm=0;colm<colunmSize;colm++){
                 int n=row*colunmSize+colm;
                 if(!(board[row][colm]=='#')){
                     List<Integer> neighbors=findNeighbors(board,n,row,colm);
                     adjecency.get(n).addAll(neighbors);
                 }
-
+                if (board[row][colm] == items) {
+                    itemVertices[itemCount] = n;
+                    itemCount++;
+                }
 
 
             }
@@ -58,6 +72,8 @@ public class ParseBoard {
 
         return results;
     }
+
+
     public static void main (String [] args){
         char [][] board={{'.','.','.','x','.'}, {'.','.','.','.','.'},
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
