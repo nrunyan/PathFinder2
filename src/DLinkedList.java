@@ -57,6 +57,16 @@ public class DLinkedList {
             add(currInList.getValue());
         }
     }
+    public boolean contains(Object object){
+        Node curr = this.root;
+        while(curr.getNext() != null){
+            if(curr.getValue() == object){
+                return true;
+            }
+            curr = curr.getNext();
+        }
+        return false;
+    }
     public Object remove(int index){
         Object result = get(index);
 
