@@ -53,6 +53,10 @@ public class DLinkedList {
         return this.size;
     }
     public void push(Object object){
+        if(this.root.getNext() == null){
+            add(object);
+            return;
+        }
         Node next = this.root.getNext();
         Node newNode = new Node(object,this.root);
         next.setPrev(newNode);
@@ -61,37 +65,43 @@ public class DLinkedList {
         newNode.setNext(next);
     }
 
-//    public static void Main(String[] args) {
-//        DLinkedList dLinkedList = new DLinkedList();
-//        dLinkedList.add(1);
-//        dLinkedList.add(2);
-//        dLinkedList.add(3);
-//        dLinkedList.add(4);
-//        System.out.println(dLinkedList.size);
-//        System.out.println("");
-//        DLinkedList list = new DLinkedList();
-//        list.addAll(dLinkedList);
-//        System.out.println(list.size);
-//        System.out.println("");
-//        for(int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
-//        System.out.println("");
-//        int first = (int) list.pop();
-//        System.out.println(first);
-//        System.out.println("");
-//
-//        for(int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
-//        System.out.println("");
-//        list.push(5);
-//        for(int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i));
-//        }
-//        System.out.println("");
-//        System.out.println(list.getFirst());
-//        System.out.println("");
-//        System.out.println(list.getLast());
-//    }
+    public static void main(String[] args) {
+        DLinkedList dLinkedList = new DLinkedList();
+        dLinkedList.push(1);
+        dLinkedList.add(2);
+        dLinkedList.add(3);
+        dLinkedList.add(4);
+        System.out.println(dLinkedList.size);
+        System.out.println("");
+        DLinkedList list = new DLinkedList();
+        list.addAll(dLinkedList);
+        System.out.println(list.size);
+        System.out.println("");
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i));
+        }
+        System.out.println("");
+        int first = (int) list.pop();
+        System.out.println(first);
+        System.out.println("");
+
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i));
+        }
+        System.out.println("");
+        list.push(5);
+        list.push(6);
+        int size = list.size;
+
+        for(int i = 0; i < size; i++){
+            list.push(i);
+        }
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i));
+        }
+        System.out.println("");
+        System.out.println(list.getFirst());
+        System.out.println("");
+        System.out.println(list.getLast());
+    }
 }
