@@ -22,6 +22,9 @@ public class Node {
     public void setPrev(Node prev) {
         this.prev = prev;
     }
+
+    public Node getPrev() {return prev;}
+
     public Object getValue(){
         return this.value;
     }

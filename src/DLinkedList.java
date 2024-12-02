@@ -49,6 +49,26 @@ public class DLinkedList {
             add(currInList.getValue());
         }
     }
+    public Object remove(int index){
+        Object result = get(index);
+        Node curr = this.root;
+        for(int i = 0; i < index+1; i++){
+            if(curr.getNext() != null){
+                curr = curr.getNext();
+            }else {
+                return null;
+            }
+        }
+        Node prev = curr.getPrev();
+        Node next = curr.getNext();
+        if(curr.getNext() != null) {
+            next.setPrev(prev);
+        }
+        this.size--;
+        prev.setNext(next);
+        return result;
+    }
+
     public int size(){
         return this.size;
     }
@@ -103,5 +123,13 @@ public class DLinkedList {
         System.out.println(list.getFirst());
         System.out.println("");
         System.out.println(list.getLast());
+        System.out.println("adad");
+        list.remove(3);
+        list.remove(0);
+
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i));
+        }
+
     }
 }
