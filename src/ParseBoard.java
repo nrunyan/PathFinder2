@@ -10,6 +10,7 @@ public class ParseBoard {
     private final char emptySpace='.';
     private final char items='x';
     private final char obsticles='#';
+    public ArrayList<Integer> stars=new ArrayList<>();
     public ParseBoard(char[][] board, int amountOfNodes, int colunmSize, int rowSize){
         this.rowSize = board.length;
         this.colunmSize = board.length > 0 ? board[0].length : 0;
@@ -33,6 +34,9 @@ public class ParseBoard {
             for(int colm=0;colm<colunmSize;colm++){
                 int n=row*colunmSize+colm;
                 if(!(board[row][colm]=='#')){
+                    if(board[row][colm]=='x'){
+                        stars.add(n);
+                    }
                     List<Integer> neighbors=findNeighbors(board,n,row,colm);
                     adjecency.get(n).addAll(neighbors);
                 }
@@ -78,10 +82,6 @@ public class ParseBoard {
         char [][] board={{'.','.','.','x','.'}, {'.','.','.','.','.'},
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
         ParseBoard parseBoard =new ParseBoard(board,25,5,5);
-        List<List<Integer>> adjecency=new ArrayList<>();
-        for(int i=0;i<4;i++){
-            adjecency.add(new ArrayList<>());
-        }
         int start = 0, dst = 3;
         System.out.println("path from " + start +
                 " to " + dst + " are ");
