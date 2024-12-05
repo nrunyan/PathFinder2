@@ -4,8 +4,9 @@ public class BBFS {
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;
-    public static int[][] singleSourceShortestPaths(List<List<Integer>> adj, int source) {
-        int n = adj.size();
+    public static int[][] singleSourceShortestPaths(DLinkedList[] adj,
+                                                    int source) {
+        int n = adj.length;
         int[] color = new int[n];
         int[] parent = new int[n];
         int[] dist = new int[n];
@@ -20,8 +21,8 @@ public class BBFS {
         Q.enqueue(source);
         while (!Q.isEmpty()) {
             int u = Q.dequeue();
-            for (int k = 0; k < adj.get(u).size(); k++) {
-                int v = adj.get(u).get(k);
+            for (int k = 0; k < adj[u].size(); k++) {
+                int v = (int)adj[u].get(k);
                 if (color[v] == WHITE) {
                     color[v] = GRAY;
                     parent[v] = u;

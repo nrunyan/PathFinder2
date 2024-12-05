@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Dijkstra {
     //create ssp
-    private void createSSP(List<List<Integer>> adjecency, int size){
+    private void createSSP(DLinkedList[] adjecency, int size){
         boolean[] inSSP=new boolean[size];
         int [] distance=new int[size];
         int [] parent=new int[size];
@@ -28,7 +28,9 @@ public class Dijkstra {
 
             }
             inSSP[smallestIndex]=true;
-            for(int neighbor:adjecency.get(smallestIndex)){
+//            for(int neighbor:adjecency.get(smallestIndex)){
+            for(int j = 0; j<adjecency[smallestIndex].size();j++){
+                int neighbor = (int)adjecency[smallestIndex].get(j);
                 if(!inSSP[neighbor]&&distance[smallestIndex]!=Integer.MAX_VALUE
                         &&distance[smallestIndex]+1<distance[neighbor]){
                     distance[neighbor]=distance[smallestIndex]+1;

@@ -1,24 +1,24 @@
 import java.util.List;
 
 public class BDijkstra {
-    public static int[] shortestPath(List<List<Integer>> adj,
+    public static int[] shortestPath(DLinkedList[] adj,
                                      int source, int destination) {
         // Initialization
-        Integer[] distances = new Integer[adj.size()];
-        Integer[] parents = new Integer[adj.size()];
-        for (int i = 0; i < adj.size(); i++) {
+        Integer[] distances = new Integer[adj.length];
+        Integer[] parents = new Integer[adj.length];
+        for (int i = 0; i < adj.length; i++) {
             distances[i] = Integer.MAX_VALUE;
             parents[i] = null;
         }
         distances[source] = 0;
         MinHeap Q = new MinHeap();
-        for (int i = 0; i < adj.size(); i++) {
+        for (int i = 0; i < adj.length; i++) {
             Q.insert(i, distances[i]);
         }
         while (Q.size > 0) {
             int u = (int)Q.extractMin();
-            for (int i = 0; i < adj.get(u).size(); i++) {
-                int v = adj.get(u).get(i);
+            for (int i = 0; i < adj[u].size(); i++) {
+                int v = (int)adj[u].get(i);
                 if (distances[v] > distances[u] + 1) {
                     distances[v] = distances[u] + 1;
                     parents[v] = u;
@@ -27,7 +27,7 @@ public class BDijkstra {
             }
         }
 
-        int[] path = new int[adj.size()];
+        int[] path = new int[adj.length];
         Integer j = destination;
         Integer i = parents[destination];
         int step = 0;

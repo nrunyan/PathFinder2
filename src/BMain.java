@@ -8,7 +8,7 @@ public class BMain {
         ParseBoard boardA = new ParseBoard(parsedA, 30, 6, 5);
 
         // Test BFS
-        LinkedList<Integer> path = runBFS(boardA, 0);
+        DLinkedList path = runBFS(boardA, 0);
 
         // Test DFS
 
@@ -19,24 +19,25 @@ public class BMain {
         // Test other
     }
 
-    public static LinkedList<Integer> runBFS(ParseBoard board, int source) {
+    public static DLinkedList runBFS(ParseBoard board, int source) {
         // When item i is found, itemVertices[i] is set to -1.
         int[] remainingItems = board.itemVertices.clone();
         // Remove 0 from remaining items, in case we started on an item.
         arraySetKey(remainingItems, 0, -1);
-        LinkedList<Integer> path = new LinkedList<>();
+        DLinkedList path = new DLinkedList();
         path.push(source);
 
         while (!arrayOnlyHas(remainingItems, -1)) {
-            LinkedList<Integer> localPath = bfsToNext(board, source, remainingItems);
+            DLinkedList localPath = bfsToNext(board, source, remainingItems);
             localPath.pop();
             path.addAll(localPath);
-            source = path.getLast();
+            source = (int)path.getLast();
         }
 
         return path;
     }
-    public static LinkedList<Integer> bfsToNext(ParseBoard board, int source, int[] remainingItems) {
+    public static DLinkedList bfsToNext(ParseBoard board, int source,
+                              int[] remainingItems) {
         int[][] bfsResult = BBFS.singleSourceShortestPaths(board.adjecency, source);
         int[] bfsParent = bfsResult[0];
         int[] bfsDist = bfsResult[1];
@@ -85,8 +86,8 @@ public class BMain {
         }
         return true;
     }
-    public static LinkedList<Integer> pathFromParentArray(int[] parent, int destination) {
-        LinkedList<Integer> path = new LinkedList<>();
+    public static DLinkedList pathFromParentArray(int[] parent, int destination) {
+        DLinkedList path = new DLinkedList();
         // Destination == -1 means no path was found, return the empty path.
         if (destination == -1) {
             return path;

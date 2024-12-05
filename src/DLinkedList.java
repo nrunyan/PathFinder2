@@ -1,7 +1,7 @@
 public class DLinkedList {
-    Node root;
-    Node last;
-    int size;
+    private Node root;
+    private Node last;
+    private int size;
     public DLinkedList(){
         this.root = new Node();
         this.last = root;
