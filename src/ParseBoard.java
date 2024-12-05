@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class ParseBoard {
-    public List<List<Integer>> adjecency=new ArrayList<>();
+    public DLinkedList[] adjecency;
     public int[] itemVertices;
     public int itemCount = 0;
     public int amountOfNodes;
@@ -10,11 +10,12 @@ public class ParseBoard {
     private final char emptySpace='.';
     private final char items='x';
     private final char obsticles='#';
-    public ArrayList<Integer> stars=new ArrayList<>();
+    public DLinkedList stars=new DLinkedList();
     public ParseBoard(char[][] board, int amountOfNodes, int colunmSize, int rowSize){
         this.rowSize = board.length;
         this.colunmSize = board.length>0?board[0].length:0;
         this.amountOfNodes = this.rowSize * this.colunmSize;
+        this.adjecency = new DLinkedList[amountOfNodes];
 //        this.amountOfNodes=amountOfNodes;
 //        this.colunmSize=colunmSize;
 //        this.rowSize=rowSize;
@@ -27,8 +28,9 @@ public class ParseBoard {
         createAdjecencyList(board);
     }
     private void createAdjecencyList(char [][] board){
-        for(int i=0;i<amountOfNodes;i++){
-            adjecency.add(new ArrayList<>());
+        for(int i=0;i<this.amountOfNodes;i++) {
+            adjecency[i] = new DLinkedList();
+//                adjecency.add(new ArrayList<>());
         }
         for(int row=0;row<rowSize;row++){
             for(int colm=0;colm<colunmSize;colm++){
@@ -37,23 +39,22 @@ public class ParseBoard {
                     if(board[row][colm]=='x'){
                         stars.add(n);
                     }
-                    List<Integer> neighbors=findNeighbors(board,n,row,colm);
-                    adjecency.get(n).addAll(neighbors);
+//                    List<Integer> neighbors=findNeighbors(board,n,row,colm);
+                    DLinkedList neighbors = findNeighbors(board,n,row,colm);
+                    adjecency[n].addAll(neighbors);
                 }
                 if (board[row][colm] == items) {
                     itemVertices[itemCount] = n;
                     itemCount++;
                 }
-
-
             }
         }
 
     }
-    private List<Integer> findNeighbors(char [][] board, int n, int row, int colm){
-        List<Integer> results=new LinkedList<>();
+    private DLinkedList findNeighbors(char [][] board, int n, int row, int colm){
+        DLinkedList results = new DLinkedList();
         int[][] directionsArray={{1,0},{-1,0},{0,1},{0,-1}};
-        List<Integer> directionsToUse=new LinkedList<>();
+        DLinkedList directionsToUse=new DLinkedList();
         if(row>0){
             directionsToUse.add(1);
         }
@@ -66,14 +67,14 @@ public class ParseBoard {
         if(colm<colunmSize-1){
             directionsToUse.add(2);
         }
-        for(int i:directionsToUse){
-            int rowDiff=directionsArray[i][0];
-            int colmDiff=directionsArray[i][1];
+        for(int i = 0; i< directionsToUse.size();i++){
+            int index = (int)directionsToUse.get(i);
+            int rowDiff=directionsArray[index][0];
+            int colmDiff=directionsArray[index][1];
             if(board[row+rowDiff][colm+colmDiff]!='#'){
                 results.add((row+rowDiff)*colunmSize+(colm+colmDiff));
             }
         }
-
         return results;
     }
 
@@ -87,14 +88,13 @@ public class ParseBoard {
                 " to " + dst + " are ");
 
         // Function for finding the paths
-        BreadFirst.findPaths(parseBoard.adjecency, start, dst);
-        for(int i=0; i<25;i++){{
-            for(int n:parseBoard.adjecency.get(i)){
-                System.out.print(n+" ");
+//        BreadFirst.findPaths(parseBoard.adjecency, start, dst);
+        for(int i = 0; i< parseBoard.adjecency.length;i++){
+            for(int j = 0; j<parseBoard.adjecency[i].size();j++){
+                int item = (int)parseBoard.adjecency[i].get(j);
+                System.out.print(item+" ");
             }
-            System.out.println();
-        }
-
+            System.out.println("");
         }
     }
 }

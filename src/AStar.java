@@ -39,9 +39,10 @@ public class AStar {
 //    }
 
 
-    private ArrayList<Integer>aStar(int start, int end,List<List<Integer>> adjecency){
+    private DLinkedList aStar(int start, int end,
+                               DLinkedList[] adjecency){
 
-        ArrayList<Integer> openList=new ArrayList<>(); //nodes to be evaluated
+        DLinkedList openList=new DLinkedList(); //nodes to be evaluated
         openList.add(start);
         boolean[] alreadyChecked=new boolean[NUMBEROFNODES];
         int [] heristics =new int[NUMBEROFNODES];
@@ -54,13 +55,15 @@ public class AStar {
         while(!openList.isEmpty()){
             //find smallest in openList
             int currentIndex=smallestIn(openList,heristics);
-            int current=openList.get(currentIndex);
+            int current=(int)openList.get(currentIndex);
             openList.remove(currentIndex);
             alreadyChecked[current]=true;
             if(current==end){
                 return reconstruct_path(current,start,parent);
             }
-            for(int neighbor:adjecency.get(current)){
+//            for(int neighbor:adjecency.get(current)){
+            for (int i =0; i < adjecency[current].size();i++){
+                int neighbor = (int) adjecency[current].get(i);
                 if(!alreadyChecked[neighbor]){
                     if(!openList.contains(neighbor)){
                         openList.add(neighbor);
@@ -79,25 +82,25 @@ public class AStar {
         System.out.println("failure");
         return null;
     }
-    private ArrayList<Integer>  reconstruct_path(int current,int start,int [] parent){
-        ArrayList<Integer> path =new ArrayList<>();
+    private DLinkedList  reconstruct_path(int current,int start,int [] parent){
+        DLinkedList path = new DLinkedList();
         while(!(current ==start)){
-            //TODO:replace with push
-            path.addFirst(current);
+            //replace with push
+            path.push(current);
             current=parent[current];
         }
-        //TODO:replace with push
-        path.addFirst(start);
+        //replace with push
+        path.push(start);
         return path;
     }
 
     //TODO: change to be about the heristics
-    private int smallestIn(ArrayList<Integer> list,int[] heristics){
+    private int smallestIn(DLinkedList list,int[] heristics){
         int min =Integer.MAX_VALUE;
         int indexmin=-1;
         for(int i=0;i<list.size();i++){
-            if(heristics[list.get(i)]<min){
-                min=heristics[list.get(i)];
+            if(heristics[(int)list.get(i)]<min){
+                min=heristics[(int)list.get(i)];
                 indexmin=i;
             }
         }
@@ -109,11 +112,15 @@ public class AStar {
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
         ParseBoard parseBoard =new ParseBoard(board,25,5,5);
         AStar a=new AStar();
-        ArrayList<Integer> path=a.aStar(0,24,parseBoard.adjecency);
-        for(int i: parseBoard.stars){
+        DLinkedList path=a.aStar(0,24,parseBoard.adjecency);
+//        for(int i: parseBoard.stars){
+        for (int j = 0; j < parseBoard.stars.size(); j++){
+            int i = (int)parseBoard.stars.get(j);
             System.out.println("Star at: "+i);
         }
-        for(int i:path){
+//        for(int i:path){
+        for (int j = 0; j< path.size();j++){
+            int i = (int)path.get(j);
             System.out.println(i);
         }
     }
