@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-
+//keep track of parents, make it full of -1
 class DepthFirst {
     static void DFSRec(List<List<Integer> > adj,
                        boolean[] visited, int s){
