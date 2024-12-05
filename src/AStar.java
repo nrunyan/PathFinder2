@@ -82,11 +82,11 @@ public class AStar {
     private ArrayList<Integer>  reconstruct_path(int current,int start,int [] parent){
         ArrayList<Integer> path =new ArrayList<>();
         while(!(current ==start)){
-            //replace with push
+            //TODO:replace with push
             path.addFirst(current);
             current=parent[current];
         }
-        //replace with push
+        //TODO:replace with push
         path.addFirst(start);
         return path;
     }
@@ -97,6 +97,7 @@ public class AStar {
         int indexmin=-1;
         for(int i=0;i<list.size();i++){
             if(heristics[list.get(i)]<min){
+                min=heristics[list.get(i)];
                 indexmin=i;
             }
         }
@@ -104,11 +105,11 @@ public class AStar {
     }
 
     public static void main(String [] args){
-        char [][] board={{'.','.','.','x','.'}, {'.','.','.','.','.'},
+        char [][] board={{'.','.','.','x','.'}, {'#','.','.','.','.'},
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
         ParseBoard parseBoard =new ParseBoard(board,25,5,5);
         AStar a=new AStar();
-        ArrayList<Integer> path=a.aStar(0,3,parseBoard.adjecency);
+        ArrayList<Integer> path=a.aStar(0,24,parseBoard.adjecency);
         for(int i: parseBoard.stars){
             System.out.println("Star at: "+i);
         }

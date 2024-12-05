@@ -13,7 +13,7 @@ public class ParseBoard {
     public ArrayList<Integer> stars=new ArrayList<>();
     public ParseBoard(char[][] board, int amountOfNodes, int colunmSize, int rowSize){
         this.rowSize = board.length;
-        this.colunmSize = board.length > 0 ? board[0].length : 0;
+        this.colunmSize = board.length>0?board[0].length:0;
         this.amountOfNodes = this.rowSize * this.colunmSize;
 //        this.amountOfNodes=amountOfNodes;
 //        this.colunmSize=colunmSize;
@@ -88,5 +88,13 @@ public class ParseBoard {
 
         // Function for finding the paths
         BreadFirst.findPaths(parseBoard.adjecency, start, dst);
+        for(int i=0; i<25;i++){{
+            for(int n:parseBoard.adjecency.get(i)){
+                System.out.print(n+" ");
+            }
+            System.out.println();
+        }
+
+        }
     }
 }
