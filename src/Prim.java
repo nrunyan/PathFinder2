@@ -1,5 +1,5 @@
 public class Prim {
-    public int[] createMST(DLinkedList[] adjecency, int size){
+    public int[][] createMST(DLinkedList[] adjecency, int size){
         int[] dist = new int[size];
         boolean[]inMST=new boolean[size];
         int[]key = new int[size];
@@ -10,14 +10,15 @@ public class Prim {
         }
         key[0] = 0;
         parent[0] = -1;
-        int currentDist = 0;
-        dist[0] =currentDist;
+        dist[0] =0;
         for(int count = 0; count < size; count++){
             int nextMin = extractMin(key,inMST);
             if(nextMin != -1) {
                 inMST[nextMin] = true;
-                currentDist++;
-                dist[nextMin] = currentDist;
+                int par= parent[nextMin];
+                if(par != -1) {
+                    dist[nextMin] = dist[par] + 1;
+                }
                 DLinkedList adjecentTOInMST = adjecency[nextMin];
                 for (int v = 0; v < adjecentTOInMST.size(); v++) {
                     int currV = (int) adjecentTOInMST.get(v);
@@ -30,7 +31,7 @@ public class Prim {
                 break;
             }
         }
-        return parent;
+        return new int[][]{parent,dist};
     }
     private int extractMin(int[] key,boolean[] inMST){
         int min = Integer.MAX_VALUE;
@@ -56,7 +57,7 @@ public class Prim {
             }
         }
         Prim prim = new Prim();
-        int[] mst = prim.createMST(parseBoard.adjecency,35);
+        int[] mst = prim.createMST(parseBoard.adjecency,35)[0];
         for(int i =0;i< mst.length;i++){
             System.out.print(mst[i]+" ");
         }
