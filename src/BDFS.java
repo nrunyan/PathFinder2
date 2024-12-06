@@ -1,10 +1,12 @@
 import java.util.List;
 
-public class BDFS {
+public class BDFS implements Pathfinder {
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;
-    public static int[][] search(DLinkedList[] adj, int source) {
+
+
+    public int[][] search(DLinkedList[] adj, int source) {
         // Initialization
         State state = new State(adj.length);
         for (int u = 0; u < adj.length; u++) {

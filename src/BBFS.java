@@ -1,9 +1,13 @@
 import java.util.List;
 
-public class BBFS {
+public class BBFS implements Pathfinder {
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;
+
+    public int[][] search(DLinkedList[] adj, int source) {
+        return singleSourceShortestPaths(adj, source);
+    }
     public static int[][] singleSourceShortestPaths(DLinkedList[] adj,
                                                     int source) {
         int n = adj.length;

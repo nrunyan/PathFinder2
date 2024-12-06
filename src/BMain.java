@@ -42,7 +42,8 @@ public class BMain {
 
 
     public static DLinkedList dfsToNext(ParseBoard board, int source, int[] remainingItems) {
-        int[][] dfsResult = BDFS.search(board.adjecency, source);
+        Pathfinder DFS = new BDFS();
+        int[][] dfsResult = DFS.search(board.adjecency, source);
         int[] dfsParent = dfsResult[0];
         int[] dfsDist = dfsResult[1];
 
