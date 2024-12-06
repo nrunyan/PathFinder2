@@ -1,7 +1,5 @@
 public class Prim {
-    public int[] createMST(DLinkedList[] adjecency, int size,
-                          int numCol,
-                          int numRow){
+    public int[] createMST(DLinkedList[] adjecency, int size){
         boolean[] inMST=new boolean[size];
         int [] key=new int[size];
         int [] parent=new int[size];
@@ -46,7 +44,7 @@ public class Prim {
         char[][] board = ReadConfig.parseFile("testCases/baseTest.txt");
         ParseBoard parseBoard = new ParseBoard(board,35,7,5);
         Prim prim = new Prim();
-        int[] mst = prim.createMST(parseBoard.adjecency,35,7,5);
+        int[] mst = prim.createMST(parseBoard.adjecency,35);
         for(int i =0;i< mst.length;i++){
             System.out.print(mst[i]+" ");
         }
