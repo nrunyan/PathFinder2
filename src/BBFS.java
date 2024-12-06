@@ -7,6 +7,7 @@ public class BBFS implements Pathfinder {
 
     public int[][] search(DLinkedList[] adj, int source) {
         return singleSourceShortestPaths(adj, source);
+
     }
     public static int[][] singleSourceShortestPaths(DLinkedList[] adj,
                                                     int source) {
