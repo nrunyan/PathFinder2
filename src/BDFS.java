@@ -4,10 +4,10 @@ public class BDFS {
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;
-    public static int[][] search(List<List<Integer>> adj, int source) {
+    public static int[][] search(DLinkedList[] adj, int source) {
         // Initialization
-        State state = new State(adj.size());
-        for (int u = 0; u < adj.size(); u++) {
+        State state = new State(adj.length);
+        for (int u = 0; u < adj.length; u++) {
             state.color[u] = WHITE;
             state.parent[u] = -1;
             state.discovered[u] = -1;
@@ -26,12 +26,12 @@ public class BDFS {
         return new int[][]{ state.parent, state.discovered };
     }
 
-    private static void dfsVisit(List<List<Integer>> adj, int u, State state) {
+    private static void dfsVisit(DLinkedList[] adj, int u, State state) {
         state.time++;
         state.discovered[u] = state.time;
         state.color[u] = GRAY;
-        for (int k = 0; k < adj.get(u).size(); k++) {
-            int v = adj.get(u).get(k);
+        for (int k = 0; k < adj[u].size(); k++) {
+            int v = (int) adj[u].get(k);
             if (state.color[v] == WHITE) {
                 state.parent[v] = u;
                 dfsVisit(adj, v, state);
