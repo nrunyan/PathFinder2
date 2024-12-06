@@ -107,10 +107,10 @@ public class DLinkedList {
         this.root.setNext(newNode);
         newNode.setNext(next);
     }
-    public int[] toArray(DLinkedList dLinkedList){
+    public int[] toArray(){
         int[] array = new int[size];
         for(int i = 0; i < size;i++){
-            array[i] = (int)dLinkedList.get(i);
+            array[i] = (int)this.get(i);
         }
         return array;
     }

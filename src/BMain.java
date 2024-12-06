@@ -8,12 +8,11 @@ public class BMain {
         ParseBoard boardA = new ParseBoard(parsedA, 30, 6, 5);
 
         // Test BFS
-        DLinkedList bfsPath = runBFS(boardA, 0);
+        int[] bfsPath = runBFS(boardA, 0).toArray();
 
         // Test DFS
         DLinkedList localDfsPath = dfsToNext(boardA, 6, new int[]{14});
-        DLinkedList dfsPath = runDFS(boardA, 0);
-
+        int[] dfsPath = runDFS(boardA, 0).toArray();
         // Test Dijkstra
 
         // Test AStar
