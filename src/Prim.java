@@ -1,5 +1,8 @@
-public class Prim {
-    public int[][] createMST(DLinkedList[] adjecency, int size){
+
+
+public class Prim implements Pathfinder {
+    public int[][] createMST(DLinkedList[] adjecency,int source){
+        int size = adjecency.length;
         int[] dist = new int[size];
         boolean[]inMST=new boolean[size];
         int[]key = new int[size];
@@ -8,9 +11,9 @@ public class Prim {
             key[i] = Integer.MAX_VALUE;
             inMST[i] = false;
         }
-        key[0] = 0;
-        parent[0] = -1;
-        dist[0] =0;
+        key[source] = 0;
+        parent[source] = -1;
+        dist[source] =0;
         for(int count = 0; count < size; count++){
             int nextMin = extractMin(key,inMST);
             if(nextMin != -1) {
@@ -57,9 +60,14 @@ public class Prim {
             }
         }
         Prim prim = new Prim();
-        int[] mst = prim.createMST(parseBoard.adjecency,35)[0];
+        int[] mst = prim.createMST(parseBoard.adjecency,0)[0];
         for(int i =0;i< mst.length;i++){
             System.out.print(mst[i]+" ");
         }
+    }
+
+    @Override
+    public int[][] search(DLinkedList[] adj, int source) {
+        return createMST(adj,source);
     }
 }

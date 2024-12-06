@@ -44,11 +44,15 @@ public class DLinkedList {
     }
     public Object pop() {
         Node poppedNode = this.root.getNext();
-        Object poppedObj = this.root.getNext().getValue();
-        this.root.setNext(poppedNode.getNext());
-        poppedNode.getNext().setPrev(this.root);
-        this.size--;
-        return poppedObj;
+        if(poppedNode != null) {
+            Object poppedObj = this.root.getNext().getValue();
+            this.root.setNext(poppedNode.getNext());
+            poppedNode.getNext().setPrev(this.root);
+            this.size--;
+            return poppedObj;
+        }else {
+            return null;
+        }
     }
     public void addAll(DLinkedList list){
         Node currInList = list.getRoot();
