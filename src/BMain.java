@@ -8,36 +8,84 @@ public class BMain {
         ParseBoard boardA = new ParseBoard(parsedA, 30, 6, 5);
 
         // Test BFS
-        DLinkedList path = runBFS(boardA, 0);
+        LinkedList<Integer> bfsPath = runBFS(boardA, 0);
 
         // Test DFS
+        LinkedList<Integer> localDfsPath = dfsToNext(boardA, 6, new int[]{14});
+        LinkedList<Integer> dfsPath = runDFS(boardA, 0);
 
         // Test Dijkstra
 
         // Test AStar
 
         // Test other
+        int test = 0;
     }
 
-    public static DLinkedList runBFS(ParseBoard board, int source) {
+    public static LinkedList<Integer> runDFS(ParseBoard board, int source) {
         // When item i is found, itemVertices[i] is set to -1.
         int[] remainingItems = board.itemVertices.clone();
         // Remove 0 from remaining items, in case we started on an item.
         arraySetKey(remainingItems, 0, -1);
-        DLinkedList path = new DLinkedList();
+        LinkedList<Integer> path = new LinkedList<>();
         path.push(source);
 
         while (!arrayOnlyHas(remainingItems, -1)) {
-            DLinkedList localPath = bfsToNext(board, source, remainingItems);
+            LinkedList<Integer> localPath = dfsToNext(board, source, remainingItems);
             localPath.pop();
             path.addAll(localPath);
-            source = (int)path.getLast();
+            source = path.getLast();
         }
 
         return path;
     }
-    public static DLinkedList bfsToNext(ParseBoard board, int source,
-                              int[] remainingItems) {
+
+
+    public static LinkedList<Integer> dfsToNext(ParseBoard board, int source, int[] remainingItems) {
+        int[][] dfsResult = BDFS.search(board.adjecency, source);
+        int[] dfsParent = dfsResult[0];
+        int[] dfsDist = dfsResult[1];
+
+        int shortestIx = -1;
+        int shortestLen = Integer.MAX_VALUE;
+        // Find the path to an item with shortest length
+        for (int i = 0; i < board.amountOfNodes; i++) {
+            if (arrayHasKey(remainingItems, i)) {
+                // -1 signifies no path exists
+                if (dfsDist[i] != -1 && dfsDist[i] < shortestLen) {
+                    shortestIx = i;
+                    shortestLen = dfsDist[i];
+                }
+            }
+        }
+
+        // Remove the item we collected from remainingItems, using an array as a ghetto Set
+        if (shortestIx != -1) {
+            arraySetKey(remainingItems, shortestIx, -1);
+        }
+
+        // Reconstruct the path using the parent pointers
+        return pathFromParentArray(dfsParent, shortestIx);
+    }
+
+    public static LinkedList<Integer> runBFS(ParseBoard board, int source) {
+        // When item i is found, itemVertices[i] is set to -1.
+        int[] remainingItems = board.itemVertices.clone();
+        // Remove 0 from remaining items, in case we started on an item.
+        arraySetKey(remainingItems, 0, -1);
+        LinkedList<Integer> path = new LinkedList<>();
+        path.push(source);
+
+        while (!arrayOnlyHas(remainingItems, -1)) {
+            LinkedList<Integer> localPath = bfsToNext(board, source, remainingItems);
+            localPath.pop();
+            path.addAll(localPath);
+            source = path.getLast();
+        }
+
+        return path;
+    }
+    public static LinkedList<Integer> bfsToNext(ParseBoard board, int source, int[] remainingItems) {
         int[][] bfsResult = BBFS.singleSourceShortestPaths(board.adjecency, source);
         int[] bfsParent = bfsResult[0];
         int[] bfsDist = bfsResult[1];
@@ -86,8 +134,8 @@ public class BMain {
         }
         return true;
     }
-    public static DLinkedList pathFromParentArray(int[] parent, int destination) {
-        DLinkedList path = new DLinkedList();
+    public static LinkedList<Integer> pathFromParentArray(int[] parent, int destination) {
+        LinkedList<Integer> path = new LinkedList<>();
         // Destination == -1 means no path was found, return the empty path.
         if (destination == -1) {
             return path;
