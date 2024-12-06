@@ -107,6 +107,13 @@ public class DLinkedList {
         this.root.setNext(newNode);
         newNode.setNext(next);
     }
+    public int[] toArray(DLinkedList dLinkedList){
+        int[] array = new int[size];
+        for(int i = 0; i < size;i++){
+            array[i] = (int)dLinkedList.get(i);
+        }
+        return array;
+    }
     public boolean isEmpty(){
         return this.root.getNext() == null;
     }
