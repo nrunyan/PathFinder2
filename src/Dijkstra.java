@@ -53,7 +53,7 @@ public class Dijkstra {
     public static void main (String [] args) {
         char[][] board = {{'.', '.', '.', 'x', '.'}, {'.', '.', '.', '.', '.'},
                 {'.', 'x', '.', '.', '.'}, {'.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.'}};
-        ParseBoard parseBoard = new ParseBoard(board, 25, 5, 5);
+        ParseBoard parseBoard = new ParseBoard(board);
         Dijkstra dijkstra=new Dijkstra();
         dijkstra.createSSP(parseBoard.adjecency,25);
     }

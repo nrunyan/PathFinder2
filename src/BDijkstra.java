@@ -53,7 +53,7 @@ public class BDijkstra {
                 {'.', '.', '.', '.', '.'}
         };
 
-        ParseBoard parsedBoard = new ParseBoard(board, 25, 5, 5);
+        ParseBoard parsedBoard = new ParseBoard(board);
         BDijkstra.shortestPath(parsedBoard.adjecency, 0, 25);
     }
 }

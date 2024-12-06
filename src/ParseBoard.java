@@ -11,11 +11,11 @@ public class ParseBoard {
     private final char items='x';
     private final char obsticles='#';
     public DLinkedList stars=new DLinkedList();
-    public ParseBoard(char[][] board, int amountOfNodes, int colunmSize, int rowSize){
+    public ParseBoard(char[][] board){
         this.rowSize = board.length;
         this.colunmSize = board.length>0?board[0].length:0;
         this.amountOfNodes = this.rowSize * this.colunmSize;
-        this.adjecency = new DLinkedList[amountOfNodes];
+        this.adjecency = new DLinkedList[this.amountOfNodes];
 //        this.amountOfNodes=amountOfNodes;
 //        this.colunmSize=colunmSize;
 //        this.rowSize=rowSize;
@@ -82,7 +82,7 @@ public class ParseBoard {
     public static void main (String [] args){
         char [][] board={{'.','.','.','x','.'}, {'.','.','.','.','.'},
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
-        ParseBoard parseBoard =new ParseBoard(board,25,5,5);
+        ParseBoard parseBoard =new ParseBoard(board);
         int start = 0, dst = 3;
         System.out.println("path from " + start +
                 " to " + dst + " are ");

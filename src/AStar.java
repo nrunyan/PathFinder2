@@ -110,7 +110,7 @@ public class AStar {
     public static void main(String [] args){
         char [][] board={{'.','.','.','x','.'}, {'#','.','.','.','.'},
                 {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
-        ParseBoard parseBoard =new ParseBoard(board,25,5,5);
+        ParseBoard parseBoard =new ParseBoard(board);
         AStar a=new AStar();
         DLinkedList path=a.aStar(0,24,parseBoard.adjecency);
 //        for(int i: parseBoard.stars){

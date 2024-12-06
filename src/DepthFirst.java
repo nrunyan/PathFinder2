@@ -23,7 +23,7 @@ class DepthFirst {
     {
         char[][] board = {{'.', '.', '.', 'x', '.'}, {'.', '.', '.', '.', '.'},
                 {'.', 'x', '.', '.', '.'}, {'.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.'}};
-        ParseBoard parseBoard = new ParseBoard(board, 25, 5, 5);
+        ParseBoard parseBoard = new ParseBoard(board);
 
         int source = 1;
         System.out.println("DFS from source: " + source);

@@ -5,14 +5,19 @@ public class BMain {
 
         // Load all the boards
         char[][] parsedA = ReadConfig.parseFile("./boards/case-a.txt");
-        ParseBoard boardA = new ParseBoard(parsedA, 30, 6, 5);
+        char[][] parsedB = ReadConfig.parseFile("./testCases/objectTest.txt");
+        ParseBoard boardA = new ParseBoard(parsedA);
+        ParseBoard boardB = new ParseBoard(parsedB);
 
         // Test Pathfinder
         Pathfinder dfs = new BDFS();
         Pathfinder bfs = new BBFS();
-        int[] bfsPath = runPathfinder(bfs, boardA, 0).toArray();
-        int[] dfsPath = runPathfinder(dfs, boardA, 0).toArray();
+        Pathfinder prims = new Prim();
 
+        int[] bfsPath = runPathfinder(bfs, boardB, 0).toArray();
+        int[] dfsPath = runPathfinder(dfs, boardB, 0).toArray();
+        int[] primPath = runPathfinder(prims, boardB, 0).toArray();
+        int test = 3 * 13;
         // old Test BFS
 //        int[] bfsPath = runBFS(boardA, 0).toArray();
 
@@ -25,7 +30,7 @@ public class BMain {
         // Test AStar
 
         // Test other
-        int test = 0;
+
     }
 
     public static DLinkedList runDFS(ParseBoard board, int source) {

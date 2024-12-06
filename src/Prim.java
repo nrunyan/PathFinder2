@@ -50,7 +50,7 @@ public class Prim implements Pathfinder {
     }
     public static void main(String[] args) {
         char[][] board = ReadConfig.parseFile("testCases/baseTest.txt");
-        ParseBoard parseBoard = new ParseBoard(board,35,7,5);
+        ParseBoard parseBoard = new ParseBoard(board);
         char[] characters = new char[parseBoard.amountOfNodes];
         int count =0;
         for(int i = 0; i < 5;i++){
