@@ -4,7 +4,12 @@ import java.util.List;
 
 public class Dijkstra {
     //create ssp
-    private void createSSP(DLinkedList[] adjecency, int size){
+    //TODO:Dijkstras doesn't like unconnected graphs
+    int [] parent;
+    public Dijkstra(DLinkedList[] adjecency, int size){
+        parent=createSSP(adjecency,35);
+    }
+    private int [] createSSP(DLinkedList[] adjecency, int size){
         boolean[] inSSP=new boolean[size];
         int [] distance=new int[size];
         int [] parent=new int[size];
@@ -27,6 +32,9 @@ public class Dijkstra {
                 }
 
             }
+            if(smallestIndex==Integer.MAX_VALUE){
+                break;
+            }
             inSSP[smallestIndex]=true;
 //            for(int neighbor:adjecency.get(smallestIndex)){
             for(int j = 0; j<adjecency[smallestIndex].size();j++){
@@ -41,7 +49,9 @@ public class Dijkstra {
             printSolution(distance,size);
 
 
+
         }
+        return parent;
 
     }
     void printSolution(int dist[],int size)
@@ -50,11 +60,38 @@ public class Dijkstra {
         for (int i = 0; i < size; i++)
             System.out.println(i + " \t\t " + dist[i]);
     }
-    public static void main (String [] args) {
-        char[][] board = {{'.', '.', '.', 'x', '.'}, {'.', '.', '.', '.', '.'},
-                {'.', 'x', '.', '.', '.'}, {'.', '.', '.', '.', '.'}, {'.', '.', '.', '.', '.'}};
-        ParseBoard parseBoard = new ParseBoard(board);
-        Dijkstra dijkstra=new Dijkstra();
-        dijkstra.createSSP(parseBoard.adjecency,25);
+    private DLinkedList  reconstruct_path(int current,int start,int [] parent){
+        DLinkedList dLinkedList=new DLinkedList();
+        while(!(current ==start)){
+            //TODO:replace with push
+            dLinkedList.push(current);
+            System.out.println("pushing "+current);
+            current=parent[current];
+        }
+        //TODO:replace with push
+        System.out.println("pushing "+start);
+        dLinkedList.push(start);
+        return dLinkedList;
     }
+    public void makePath(int current, int start){
+        DLinkedList dLinkedList=reconstruct_path(current,start, parent);
+        System.out.println("Path from "+start+" to "+current);
+        for(int i=0; i< dLinkedList.size(); i++) {
+            System.out.println(dLinkedList.get(i));
+        }
+    }
+    public static void main (String [] args) {
+        char [][] board= ReadConfig.parseFile("testCases/objectTest.txt");
+        ParseBoard parseBoard =new ParseBoard(board);
+        Dijkstra dijkstra=new Dijkstra(parseBoard.adjecency,board[0].length* board.length);
+        dijkstra.makePath(11,0);
+
+    }
+//    public void makePath(int current, int start){
+//        DLinkedList dLinkedList=reconstruct_path(current,start, parent);
+//        System.out.println("Path from 0 to 11");
+//        for(int i=0; i< dLinkedList.size(); i++){
+//            System.out.println(dLinkedList.get(i));
+//        }
+//    }
 }
