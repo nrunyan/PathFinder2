@@ -33,71 +33,6 @@ public class BMain {
 
     }
 
-    public static DLinkedList runDFS(ParseBoard board, int source) {
-        // When item i is found, itemVertices[i] is set to -1.
-        int[] remainingItems = board.itemVertices.clone();
-        // Remove 0 from remaining items, in case we started on an item.
-        arraySetKey(remainingItems, 0, -1);
-        DLinkedList path = new DLinkedList();
-        path.push(source);
-
-        while (!arrayOnlyHas(remainingItems, -1)) {
-            DLinkedList localPath = dfsToNext(board, source, remainingItems);
-            localPath.pop();
-            path.addAll(localPath);
-            source = (int) path.getLast();
-        }
-
-        return path;
-    }
-
-
-    public static DLinkedList dfsToNext(ParseBoard board, int source, int[] remainingItems) {
-        Pathfinder DFS = new BDFS();
-        int[][] dfsResult = DFS.search(board.adjecency, source);
-        int[] dfsParent = dfsResult[0];
-        int[] dfsDist = dfsResult[1];
-
-        int shortestIx = -1;
-        int shortestLen = Integer.MAX_VALUE;
-        // Find the path to an item with shortest length
-        for (int i = 0; i < board.amountOfNodes; i++) {
-            if (arrayHasKey(remainingItems, i)) {
-                // -1 signifies no path exists
-                if (dfsDist[i] != -1 && dfsDist[i] < shortestLen) {
-                    shortestIx = i;
-                    shortestLen = dfsDist[i];
-                }
-            }
-        }
-
-        // Remove the item we collected from remainingItems, using an array as a ghetto Set
-        if (shortestIx != -1) {
-            arraySetKey(remainingItems, shortestIx, -1);
-        }
-
-        // Reconstruct the path using the parent pointers
-        return pathFromParentArray(dfsParent, shortestIx);
-    }
-
-    public static DLinkedList runBFS(ParseBoard board, int source) {
-        // When item i is found, itemVertices[i] is set to -1.
-        int[] remainingItems = board.itemVertices.clone();
-        // Remove 0 from remaining items, in case we started on an item.
-        arraySetKey(remainingItems, 0, -1);
-        DLinkedList path = new DLinkedList();
-        path.push(source);
-
-        while (!arrayOnlyHas(remainingItems, -1)) {
-            DLinkedList localPath = bfsToNext(board, source, remainingItems);
-            localPath.pop();
-            path.addAll(localPath);
-            source = (int) path.getLast();
-        }
-
-        return path;
-    }
-
     public static DLinkedList runPathfinder(Pathfinder algorithm, ParseBoard board, int source) {
         // When item i is found, itemVertices[i] is set to -1. Clone so we don't mutate the board's state.
         int[] remainingItems = board.itemVertices.clone();
@@ -144,33 +79,7 @@ public class BMain {
         int[] pathArray = path.toArray();
         return path;
     }
-    public static DLinkedList bfsToNext(ParseBoard board, int source, int[] remainingItems) {
-        int[][] bfsResult = BBFS.singleSourceShortestPaths(board.adjecency, source);
-        int[] bfsParent = bfsResult[0];
-        int[] bfsDist = bfsResult[1];
 
-        int shortestIx = -1;
-        int shortestLen = Integer.MAX_VALUE;
-        // Find the path to an item with shortest length
-        for (int i = 0; i < board.amountOfNodes; i++) {
-            if (arrayHasKey(remainingItems, i)) {
-                // -1 signifies no path exists
-                if (bfsDist[i] != -1 && bfsDist[i] < shortestLen) {
-                    shortestIx = i;
-                    shortestLen = bfsDist[i];
-                }
-            }
-        }
-
-        // Remove the item we collected from remainingItems, using an array as a ghetto Set
-        if (shortestIx != -1) {
-            arraySetKey(remainingItems, shortestIx, -1);
-        }
-
-        // Reconstruct the path using the parent pointers
-        DLinkedList path = pathFromParentArray(bfsParent, shortestIx);
-        return path;
-    }
     public static boolean arrayHasKey(int[] array, int key) {
         for (int i : array) {
             if (i == key) {
