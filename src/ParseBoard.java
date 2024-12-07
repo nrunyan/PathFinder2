@@ -5,7 +5,7 @@ public class ParseBoard {
     public int[] itemVertices;
     public int itemCount = 0;
     public int amountOfNodes;
-    private int colunmSize;
+    public int colunmSize;
     private int rowSize;
     private final char emptySpace='.';
     private final char items='x';
