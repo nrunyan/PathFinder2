@@ -10,13 +10,16 @@ public class ReadConfig {
             Scanner scanner = new Scanner(file);
             int count = 0;
             int currRow = 0;
+            int row = 0;
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 if(count == 0){
                     count++;
-                    int row = Integer.parseInt(String.valueOf(line.charAt(0)));
-                    int col = Integer.parseInt(String.valueOf(line.charAt(1)));
+                    row = Integer.parseInt(line);
+                }else if (count == 1) {
+                    int col = Integer.parseInt(line);
                     chars = new char[row][col];
+                    count++;
                 }else {
                     int lineLen = line.length();
                     for(int i = 0; i < lineLen; i++){

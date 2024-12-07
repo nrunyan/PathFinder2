@@ -6,15 +6,19 @@ public class BMain {
         // Load all the boards
         char[][] parsedA = ReadConfig.parseFile("./boards/case-a.txt");
         char[][] parsedB = ReadConfig.parseFile("./testCases/objectTest.txt");
+        char[][] parsedGiant = ReadConfig.parseFile("./testCases/giantTest.txt");
         ParseBoard boardA = new ParseBoard(parsedA);
         ParseBoard boardB = new ParseBoard(parsedB);
+        ParseBoard boardGiant = new ParseBoard(parsedGiant);
 
         // Run each algorithm on each board and print performance summary
         runAlgorithmsOnBoard(boardA, "case-a", false);
         runAlgorithmsOnBoard(boardB, "objectTest", false);
         runAlgorithmsOnBoard(boardB, "objectTest + return to source", true);
+        runAlgorithmsOnBoard(boardGiant, "giant board", false);
+
 //        BDijkstra dijkstra = new BDijkstra();
-//        Telemetry teleDijk = runPathfinder(dijkstra, boardB, 0, "objectTest", false);
+//        Telemetry teleDijk = runPathfinder(dijkstra, boardGiant, 0, "giant", false);
 //        System.out.print(teleDijk.summarize());
         int test = 3 * 13;
     }
