@@ -1,14 +1,23 @@
 import java.util.List;
 
-public class BDijkstra {
-    public static int[] shortestPath(DLinkedList[] adj,
-                                     int source, int destination) {
+public class BDijkstra implements Pathfinder {
+
+    public String getAlgorithmName() {
+        return "dijkstra";
+    }
+
+    public int[][] search(DLinkedList[] adj, int source) {
+        return shortestPath(adj, source);
+    }
+
+    public static int[][] shortestPath(DLinkedList[] adj,
+                                     int source) {
         // Initialization
-        Integer[] distances = new Integer[adj.length];
-        Integer[] parents = new Integer[adj.length];
+        int[] distances = new int[adj.length];
+        int[] parents = new int[adj.length];
         for (int i = 0; i < adj.length; i++) {
             distances[i] = Integer.MAX_VALUE;
-            parents[i] = null;
+            parents[i] = -1;
         }
         distances[source] = 0;
         MinHeap Q = new MinHeap();
@@ -22,38 +31,27 @@ public class BDijkstra {
                 if (distances[v] > distances[u] + 1) {
                     distances[v] = distances[u] + 1;
                     parents[v] = u;
-                    Q.decreaseKey(v, distances[v]);
+                    Q.decreaseKeyById(v, distances[v]);
                 }
             }
         }
 
-        int[] path = new int[adj.length];
-        Integer j = destination;
-        Integer i = parents[destination];
-        int step = 0;
-        path[step] = j;
-        step++;
-        while (i != null) {
-            path[step] = i;
-            j = i;
-            i = parents[j];
-            step++;
-        }
+        return new int[][]{ parents, distances };
 
-        // TODO: path is in reverse order, need to reverse it
-        return path;
-    }
-
-    public static void main(String[] args) {
-        char[][] board = {
-                {'.', '#', '.', 'x', '.'},
-                {'.', '.', '.', '.', '.'},
-                {'.', 'x', '.', '.', '.'},
-                {'.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.'}
-        };
-
-        ParseBoard parsedBoard = new ParseBoard(board);
-        BDijkstra.shortestPath(parsedBoard.adjecency, 0, 25);
+//        int[] path = new int[adj.length];
+//        Integer j = destination;
+//        Integer i = parents[destination];
+//        int step = 0;
+//        path[step] = j;
+//        step++;
+//        while (i != null) {
+//            path[step] = i;
+//            j = i;
+//            i = parents[j];
+//            step++;
+//        }
+//
+//        // TODO: path is in reverse order, need to reverse it
+//        return path;
     }
 }

@@ -15,6 +15,21 @@ public class MinHeap {
         decreaseKey(i, key);
     }
 
+    public void decreaseKeyById(int id, int newKey) {
+        int index = -1;
+        for (int i = 0; i < arr.length; i++) {
+            if ((int)(arr[i].data) == id) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            System.out.println("MinHeap decreaseKey failed: id provided was not found in minheap");
+            return;
+        }
+        decreaseKey(index, newKey);
+    }
+
     /**
      * Bubble an element UP the heap.
      * Current implementation is wrong: need to expect the id of the item,
@@ -22,6 +37,8 @@ public class MinHeap {
      * for the appropriate index.
      */
     public void decreaseKey(int index, int key) {
+        // We know the id of a node but not its location, find index via brute force search
+
         if (index >= size) {
             throw new IndexOutOfBoundsException();
         }
@@ -126,6 +143,7 @@ public class MinHeap {
         heap.insert(6, 6);
         heap.insert(1, 1);
         heap.insert(4, 4);
+        heap.decreaseKeyById(4, 0);
 
 //        heap.print();
 //        heap.decreaseKey(2, 0);

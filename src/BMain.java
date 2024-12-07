@@ -9,27 +9,37 @@ public class BMain {
         ParseBoard boardA = new ParseBoard(parsedA);
         ParseBoard boardB = new ParseBoard(parsedB);
 
-        runAlgorithmsOnBoard(boardA, "case-a");
-        runAlgorithmsOnBoard(boardB, "objectTest");
+        // Run each algorithm on each board and print performance summary
+        runAlgorithmsOnBoard(boardA, "case-a", false);
+        runAlgorithmsOnBoard(boardB, "objectTest", false);
+        runAlgorithmsOnBoard(boardB, "objectTest + return to source", true);
+//        BDijkstra dijkstra = new BDijkstra();
+//        Telemetry teleDijk = runPathfinder(dijkstra, boardB, 0, "objectTest", false);
+//        System.out.print(teleDijk.summarize());
         int test = 3 * 13;
     }
 
-    public static void runAlgorithmsOnBoard(ParseBoard board, String boardName) {
+    public static void runAlgorithmsOnBoard(ParseBoard board, String boardName, boolean shouldReturnToSource) {
         Pathfinder dfs = new BDFS();
         Pathfinder bfs = new BBFS();
         Pathfinder prims = new Prim();
+        Pathfinder dijkstra = new BDijkstra();
 
-        Telemetry bfsBoardB = runPathfinder(bfs, board, 0, boardName);
-        System.out.print(bfsBoardB.summarize());
+        Telemetry bfsResult = runPathfinder(bfs, board, 0, boardName, shouldReturnToSource);
+        System.out.print(bfsResult.summarize());
         System.out.print('\n');
-        Telemetry dfsBoardB = runPathfinder(dfs, board, 0, boardName);
-        System.out.print(dfsBoardB.summarize());
+        Telemetry dfsResult = runPathfinder(dfs, board, 0, boardName, shouldReturnToSource);
+        System.out.print(dfsResult.summarize());
         System.out.print('\n');
-        Telemetry primBoardB = runPathfinder(prims, board, 0, boardName);
-        System.out.print(primBoardB.summarize());
+        Telemetry primResult = runPathfinder(prims, board, 0, boardName, shouldReturnToSource);
+        System.out.print(primResult.summarize());
+        System.out.print('\n');
+        Telemetry dijkstraResult = runPathfinder(dijkstra, board, 0, boardName, shouldReturnToSource);
+        System.out.print(dijkstraResult.summarize());
         System.out.print('\n');
     }
-    public static Telemetry runPathfinder(Pathfinder algorithm, ParseBoard board, int source, String boardName) {
+    public static Telemetry runPathfinder(Pathfinder algorithm, ParseBoard board, int source, String boardName,
+                                          boolean shouldReturnToSource) {
         long startNanos = System.nanoTime();
         // When item i is found, itemVertices[i] is set to -1. Clone so we don't mutate the board's state.
         int[] remainingItems = board.itemVertices.clone();
@@ -39,12 +49,20 @@ public class BMain {
 
         DLinkedList path = new DLinkedList();
         path.push(source);
+        int currentPosition = source;
 
         while (!arrayOnlyContainsNegativeOnes(remainingItems)) {
-            DLinkedList localPath = pathfinderToNext(algorithm, board, source, remainingItems);
+            DLinkedList localPath = pathfinderToNext(algorithm, board, currentPosition, remainingItems);
             localPath.pop();
             path.addAll(localPath);
-            source = (int) path.getLast();
+            currentPosition = (int) path.getLast();
+        }
+
+        if (shouldReturnToSource) {
+            DLinkedList localPath = pathfinderToNext(algorithm, board, currentPosition, new int[]{ source });
+            localPath.pop();
+            path.addAll(localPath);
+            currentPosition = (int)path.getLast();
         }
 
         long endNanos = System.nanoTime();
