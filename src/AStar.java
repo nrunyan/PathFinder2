@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AStar {
+public class AStar implements Pathfinder {
     //estimate distance of each node from the cheese
     //manhattan distance
     //TODO ask TA about G-Score
@@ -104,4 +104,13 @@ public class AStar {
 
     }
 
+    @Override
+    public int[][] search(DLinkedList[] adj, int source) {
+        return new int[0][];
+    }
+
+    @Override
+    public String getAlgorithmName() {
+        return "A*";
+    }
 }
