@@ -28,6 +28,7 @@ public class BMain {
         Pathfinder bfs = new BBFS();
         Pathfinder prims = new Prim();
         Pathfinder dijkstra = new BDijkstra();
+        AStar aStar=new AStar();
 
         Telemetry bfsResult = runPathfinder(bfs, board, 0, boardName, shouldReturnToSource);
         System.out.print(bfsResult.summarize());
@@ -41,6 +42,10 @@ public class BMain {
         Telemetry dijkstraResult = runPathfinder(dijkstra, board, 0, boardName, shouldReturnToSource);
         System.out.print(dijkstraResult.summarize());
         System.out.print('\n');
+        Telemetry aStarResult = runAStar(aStar, board, 0, boardName, shouldReturnToSource);
+        System.out.print(aStarResult.summarize());
+        System.out.print('\n');
+
     }
     public static Telemetry runPathfinder(Pathfinder algorithm, ParseBoard board, int source, String boardName,
                                           boolean shouldReturnToSource) {
@@ -72,6 +77,38 @@ public class BMain {
         long endNanos = System.nanoTime();
         long elapsedNanos = endNanos - startNanos;
         Telemetry telemetry = new Telemetry(algorithm.getAlgorithmName(), boardName, path, elapsedNanos);
+        return telemetry;
+    }
+    public static Telemetry runAStar(AStar aStar,ParseBoard board, int source, String boardName,
+                                     boolean shouldReturnToSource){
+        long startNanos = System.nanoTime();
+        DLinkedList path = new DLinkedList();
+        int colmSize=board.colunmSize;
+        DLinkedList stars=board.stars;
+        for(int i=0; i<stars.size();i++){
+            if(!path.isEmpty()){
+                path.dequeue();
+            }
+            if(path.isEmpty()||!path.contains(stars.get(i))){
+                DLinkedList temp=aStar.runAStar(source,
+                        (int)stars.get(i), board.adjecency,colmSize);
+                if(temp!=null){
+                    path.addAll(temp);
+                }
+            }
+            source= (int) stars.get(i);
+        }
+        if(shouldReturnToSource){
+            DLinkedList temp=new DLinkedList();
+            for(int i= path.size()-2;i>=0;i--){
+                temp.add(path.get(i));
+            }
+            path.addAll(temp);
+        }
+
+        long endNanos = System.nanoTime();
+        long elapsedNanos = endNanos - startNanos;
+        Telemetry telemetry = new Telemetry("A*", boardName, path, elapsedNanos);
         return telemetry;
     }
     public static DLinkedList pathfinderToNext(Pathfinder algorithm, ParseBoard board, int source,

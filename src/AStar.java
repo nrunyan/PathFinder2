@@ -1,54 +1,27 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-public class AStar implements Pathfinder {
-    //estimate distance of each node from the cheese
-    //manhattan distance
-    //TODO ask TA about G-Score
-    private int colmSize;
-    private int rowSize;
-    private int NUMBEROFNODES;
-    private int calculateHValue(int start, int end){
+public class AStar{
+    public DLinkedList runAStar(int start, int end,
+                                DLinkedList[] adjecency,int colmSize){
+        return aStar(start,end,adjecency,colmSize);
+    }
+    private static int calculateHValue(int start, int end,int colmSize){
         int x=start%colmSize;
         int y=start/colmSize;
         int endX=end%colmSize;
         int endY=end/colmSize;
         return Math.abs(x-endX)+Math.abs(y-endY);
     }
-    public AStar(int colmSize, int rowSize,ParseBoard parseBoard){
-        this.colmSize=colmSize;
-        this.rowSize=rowSize;
-        NUMBEROFNODES=colmSize*rowSize;
-        DLinkedList path=aStar(0,4,parseBoard.adjecency);
-//        for(int i: parseBoard.stars){
-        for (int j = 0; j < parseBoard.stars.size(); j++){
-            int i = (int)parseBoard.stars.get(j);
-            System.out.println("Star at: "+i);
-        }
-//        for(int i:path){
-        for (int j = 0; j< path.size();j++){
-            int i = (int)path.get(j);
-            System.out.println(i);
-        }
-
-    }
-
-    private DLinkedList aStar(int start, int end,
-                              DLinkedList[] adjecency){
-
+    private static DLinkedList aStar(int start, int end,
+                              DLinkedList[] adjecency,int colmSize){
         DLinkedList openList=new DLinkedList(); //nodes to be evaluated
         openList.add(start);
-        boolean[] alreadyChecked=new boolean[NUMBEROFNODES];
-        int [] heristics =new int[NUMBEROFNODES];
-        int [] gScore=new int [NUMBEROFNODES];
-        int [] parent=new int[NUMBEROFNODES];
-        int currentGScore=0;
+        int size=adjecency.length;
+        boolean[] alreadyChecked=new boolean[size];
+        int [] heristics =new int[size];
+        int [] parent=new int[size];
         for(int i=0;i<heristics.length;i++){
-            heristics[i]=calculateHValue(i,end);
+            heristics[i]=calculateHValue(i,end,colmSize);
         }
         while(!openList.isEmpty()){
-            //find smallest in openList
             int currentIndex=smallestIn(openList,heristics);
             int current=(int)openList.get(currentIndex);
             openList.remove(currentIndex);
@@ -56,7 +29,6 @@ public class AStar implements Pathfinder {
             if(current==end){
                 return reconstruct_path(current,start,parent);
             }
-//            for(int neighbor:adjecency.get(current)){
             for (int i =0; i < adjecency[current].size();i++){
                 int neighbor = (int) adjecency[current].get(i);
                 if(!alreadyChecked[neighbor]){
@@ -74,7 +46,7 @@ public class AStar implements Pathfinder {
         System.out.println("failure");
         return null;
     }
-    private DLinkedList reconstruct_path(int current,int start,int [] parent){
+    private static DLinkedList reconstruct_path(int current,int start,int [] parent){
         DLinkedList path = new DLinkedList();
         while(!(current ==start)){
             path.push(current);
@@ -84,8 +56,7 @@ public class AStar implements Pathfinder {
         return path;
     }
 
-    //TODO: change to be about the heristics
-    private int smallestIn(DLinkedList list,int[] heristics){
+    private static int smallestIn(DLinkedList list,int[] heristics){
         int min =Integer.MAX_VALUE;
         int indexmin=-1;
         for(int i=0;i<list.size();i++){
@@ -98,19 +69,35 @@ public class AStar implements Pathfinder {
     }
 
     public static void main(String [] args){
-        char [][] board= ReadConfig.parseFile("testCases/objectTest.txt");
+        char [][] board= ReadConfig.parseFile("testCases/emptyTest.txt");
+        DLinkedList stars =new DLinkedList();
+        stars.add(3);
+        stars.add(7);
+        stars.add(11);
         ParseBoard parseBoard =new ParseBoard(board);
-        AStar a=new AStar(board[0].length, board.length,parseBoard);
+        int colmSize=board[0].length;
+        DLinkedList path=new DLinkedList();
+        int start=0;
+        for(int i=0; i<stars.size();i++){
+            if(!path.isEmpty()){
+                path.dequeue();
+            }
+            if(path.isEmpty()||!path.contains(stars.get(i))){
+                DLinkedList temp=aStar(start,(int)stars.get(i), parseBoard.adjecency, colmSize);
+                if(temp!=null){
+                    path.addAll(temp);
+                }else{
+                    System.out.println("null path");
+                }
+
+            }
+            start= (int) stars.get(i);
+        }
+        for (int j = 0; j< path.size();j++){
+            int i = (int)path.get(j);
+            System.out.println(i);
+        }
 
     }
 
-    @Override
-    public int[][] search(DLinkedList[] adj, int source) {
-        return new int[0][];
-    }
-
-    @Override
-    public String getAlgorithmName() {
-        return "A*";
-    }
 }
