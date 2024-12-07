@@ -5,6 +5,10 @@ public class BDFS implements Pathfinder {
     private static final int GRAY = 1;
     private static final int BLACK = 2;
 
+    public String getAlgorithmName() {
+        return "dfs";
+    };
+
 
     public int[][] search(DLinkedList[] adj, int source) {
         // Initialization

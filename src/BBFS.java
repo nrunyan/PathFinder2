@@ -9,6 +9,9 @@ public class BBFS implements Pathfinder {
         return singleSourceShortestPaths(adj, source);
 
     }
+    public String getAlgorithmName() {
+        return "bfs";
+    };
     public static int[][] singleSourceShortestPaths(DLinkedList[] adj,
                                                     int source) {
         int n = adj.length;

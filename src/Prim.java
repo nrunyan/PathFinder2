@@ -1,6 +1,10 @@
 
 
 public class Prim implements Pathfinder {
+
+    public String getAlgorithmName() {
+        return "prim";
+    };
     public int[][] createMST(DLinkedList[] adjecency,int source){
         int size = adjecency.length;
         int[] dist = new int[size];

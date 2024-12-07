@@ -1,7 +1,7 @@
-import java.util.LinkedList;
-
 public class BMain {
     public static void main(String[] args) {
+
+        // TODO Print boards with node labels
 
         // Load all the boards
         char[][] parsedA = ReadConfig.parseFile("./boards/case-a.txt");
@@ -9,46 +9,48 @@ public class BMain {
         ParseBoard boardA = new ParseBoard(parsedA);
         ParseBoard boardB = new ParseBoard(parsedB);
 
-        // Test Pathfinder
+        runAlgorithmsOnBoard(boardA, "case-a");
+        runAlgorithmsOnBoard(boardB, "objectTest");
+        int test = 3 * 13;
+    }
+
+    public static void runAlgorithmsOnBoard(ParseBoard board, String boardName) {
         Pathfinder dfs = new BDFS();
         Pathfinder bfs = new BBFS();
         Pathfinder prims = new Prim();
 
-        int[] bfsPath = runPathfinder(bfs, boardB, 0).toArray();
-        int[] dfsPath = runPathfinder(dfs, boardB, 0).toArray();
-        int[] primPath = runPathfinder(prims, boardB, 0).toArray();
-        int test = 3 * 13;
-        // old Test BFS
-//        int[] bfsPath = runBFS(boardA, 0).toArray();
-
-        // old Test DFS
-//        DLinkedList localDfsPath = dfsToNext(boardA, 6, new int[]{14});
-//        int[] dfsPath = runDFS(boardA, 0).toArray();
-
-        // Test Dijkstra
-
-        // Test AStar
-
-        // Test other
-
+        Telemetry bfsBoardB = runPathfinder(bfs, board, 0, boardName);
+        System.out.print(bfsBoardB.summarize());
+        System.out.print('\n');
+        Telemetry dfsBoardB = runPathfinder(dfs, board, 0, boardName);
+        System.out.print(dfsBoardB.summarize());
+        System.out.print('\n');
+        Telemetry primBoardB = runPathfinder(prims, board, 0, boardName);
+        System.out.print(primBoardB.summarize());
+        System.out.print('\n');
     }
-
-    public static DLinkedList runPathfinder(Pathfinder algorithm, ParseBoard board, int source) {
+    public static Telemetry runPathfinder(Pathfinder algorithm, ParseBoard board, int source, String boardName) {
+        long startNanos = System.nanoTime();
         // When item i is found, itemVertices[i] is set to -1. Clone so we don't mutate the board's state.
         int[] remainingItems = board.itemVertices.clone();
+
         // Remove 0 from remaining items, in case we started on an item.
         arraySetKey(remainingItems, 0, -1);
+
         DLinkedList path = new DLinkedList();
         path.push(source);
 
-        while (!arrayOnlyHas(remainingItems, -1)) {
+        while (!arrayOnlyContainsNegativeOnes(remainingItems)) {
             DLinkedList localPath = pathfinderToNext(algorithm, board, source, remainingItems);
             localPath.pop();
             path.addAll(localPath);
             source = (int) path.getLast();
         }
 
-        return path;
+        long endNanos = System.nanoTime();
+        long elapsedNanos = endNanos - startNanos;
+        Telemetry telemetry = new Telemetry(algorithm.getAlgorithmName(), boardName, path, elapsedNanos);
+        return telemetry;
     }
     public static DLinkedList pathfinderToNext(Pathfinder algorithm, ParseBoard board, int source,
                                                int[] remainingItems) {
@@ -95,9 +97,9 @@ public class BMain {
             }
         }
     }
-    public static boolean arrayOnlyHas(int[] array, int key) {
+    public static boolean arrayOnlyContainsNegativeOnes(int[] array) {
         for (int i : array) {
-            if (i != key) {
+            if (i != -1) {
                 return false;
             }
         }
