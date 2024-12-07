@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class AStar {
     //estimate distance of each node from the cheese
     //manhattan distance
     //TODO ask TA about G-Score
-    private int colmSize=5;
-    private int rowSize=5;
-    private int NUMBEROFNODES=25;
+    private int colmSize;
+    private int rowSize;
+    private int NUMBEROFNODES;
     private int calculateHValue(int start, int end){
         int x=start%colmSize;
         int y=start/colmSize;
@@ -15,32 +16,26 @@ public class AStar {
         int endY=end/colmSize;
         return Math.abs(x-endX)+Math.abs(y-endY);
     }
+    public AStar(int colmSize, int rowSize,ParseBoard parseBoard){
+        this.colmSize=colmSize;
+        this.rowSize=rowSize;
+        NUMBEROFNODES=colmSize*rowSize;
+        DLinkedList path=aStar(0,4,parseBoard.adjecency);
+//        for(int i: parseBoard.stars){
+        for (int j = 0; j < parseBoard.stars.size(); j++){
+            int i = (int)parseBoard.stars.get(j);
+            System.out.println("Star at: "+i);
+        }
+//        for(int i:path){
+        for (int j = 0; j< path.size();j++){
+            int i = (int)path.get(j);
+            System.out.println(i);
+        }
 
-//    boolean isValid(int[][] grid, int rows, int cols,
-//                    int current) {
-//        int x=current%colmSize;
-//        int y=current/colmSize;
-//        if (rows > 0 && cols > 0)
-//            return (x>= 0) && (x < rows)
-//                    && (y >= 0)
-//                    && (y < cols);
-//
-//        return false;
-//    }
-//
-//
-//
-//    boolean isUnBlocked(int[][] grid, int rows, int cols,
-//                        int current) {
-//        int x=current%colmSize;
-//        int y=current/colmSize;
-//        return isValid(grid, rows, cols, current)
-//                && grid[x][y] == 1;
-//    }
-
+    }
 
     private DLinkedList aStar(int start, int end,
-                               DLinkedList[] adjecency){
+                              DLinkedList[] adjecency){
 
         DLinkedList openList=new DLinkedList(); //nodes to be evaluated
         openList.add(start);
@@ -69,9 +64,6 @@ public class AStar {
                         openList.add(neighbor);
                         parent[neighbor]=current;
 
-                    }else{
-                        //discard path
-                        //something something about g score
                     }
 
                 }
@@ -82,14 +74,12 @@ public class AStar {
         System.out.println("failure");
         return null;
     }
-    private DLinkedList  reconstruct_path(int current,int start,int [] parent){
+    private DLinkedList reconstruct_path(int current,int start,int [] parent){
         DLinkedList path = new DLinkedList();
         while(!(current ==start)){
-            //replace with push
             path.push(current);
             current=parent[current];
         }
-        //replace with push
         path.push(start);
         return path;
     }
@@ -108,21 +98,10 @@ public class AStar {
     }
 
     public static void main(String [] args){
-        char [][] board={{'.','.','.','x','.'}, {'#','.','.','.','.'},
-                {'.','x','.','.','.'}, {'.','.','.','.','.'},{'.','.','.','.','.'}};
+        char [][] board= ReadConfig.parseFile("testCases/objectTest.txt");
         ParseBoard parseBoard =new ParseBoard(board);
-        AStar a=new AStar();
-        DLinkedList path=a.aStar(0,24,parseBoard.adjecency);
-//        for(int i: parseBoard.stars){
-        for (int j = 0; j < parseBoard.stars.size(); j++){
-            int i = (int)parseBoard.stars.get(j);
-            System.out.println("Star at: "+i);
-        }
-//        for(int i:path){
-        for (int j = 0; j< path.size();j++){
-            int i = (int)path.get(j);
-            System.out.println(i);
-        }
+        AStar a=new AStar(board[0].length, board.length,parseBoard);
+
     }
 
 }
