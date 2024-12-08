@@ -4,7 +4,7 @@ public class BMain {
         // TODO Print boards with node labels
 
         // Load all the boards
-        char[][] parsedA = ReadConfig.parseFile("./boards/case-a.txt");
+        char[][] parsedA = ReadConfig.parseFile("testCases/baseTest.txt");
         char[][] parsedB = ReadConfig.parseFile("./testCases/objectTest.txt");
         char[][] parsedEmpty = ReadConfig.parseFile("testCases/emptyTest.txt");
         char[][] parsedGiant = ReadConfig.parseFile("./testCases/giantTest.txt");
@@ -14,10 +14,10 @@ public class BMain {
         ParseBoard boardGiant = new ParseBoard(parsedGiant);
 
         // Run each algorithm on each board and print performance summary
-        printBoard(boardA,parsedA,"case-a");
-        runAlgorithmsOnBoard(boardA, "case-a", false);
-        printBoard(boardA,parsedA,"case-a + return to source");
-        runAlgorithmsOnBoard(boardA,"case-a + return to source",true);
+        printBoard(boardA,parsedA,"lot of items case");
+        runAlgorithmsOnBoard(boardA, "lot of items case", false);
+        printBoard(boardA,parsedA,"lot of items case + return to source");
+        runAlgorithmsOnBoard(boardA,"lot of items case + return to source",true);
         printBoard(boardB,parsedB,"objectTest");
         runAlgorithmsOnBoard(boardB, "objectTest", false);
         printBoard(boardB,parsedB,"objectTest + return to source");
