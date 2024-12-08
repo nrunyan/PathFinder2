@@ -6,20 +6,30 @@ public class BMain {
         // Load all the boards
         char[][] parsedA = ReadConfig.parseFile("./boards/case-a.txt");
         char[][] parsedB = ReadConfig.parseFile("./testCases/objectTest.txt");
+        char[][] parsedEmpty = ReadConfig.parseFile("testCases/emptyTest.txt");
         char[][] parsedGiant = ReadConfig.parseFile("./testCases/giantTest.txt");
         ParseBoard boardA = new ParseBoard(parsedA);
         ParseBoard boardB = new ParseBoard(parsedB);
+        ParseBoard boardEmpty = new ParseBoard(parsedEmpty);
         ParseBoard boardGiant = new ParseBoard(parsedGiant);
 
         // Run each algorithm on each board and print performance summary
         printBoard(boardA,parsedA,"case-a");
         runAlgorithmsOnBoard(boardA, "case-a", false);
+        printBoard(boardA,parsedA,"case-a + return to source");
+        runAlgorithmsOnBoard(boardA,"case-a + return to source",true);
         printBoard(boardB,parsedB,"objectTest");
         runAlgorithmsOnBoard(boardB, "objectTest", false);
         printBoard(boardB,parsedB,"objectTest + return to source");
         runAlgorithmsOnBoard(boardB, "objectTest + return to source", true);
+        printBoard(boardEmpty,parsedEmpty,"empty board");
+        runAlgorithmsOnBoard(boardEmpty, "empty board", false);
+        printBoard(boardEmpty,parsedEmpty,"empty board + return to source");
+        runAlgorithmsOnBoard(boardEmpty, "empty board + return to source", true);
         printBoard(boardGiant,parsedGiant,"giant board");
         runAlgorithmsOnBoard(boardGiant, "giant board", false);
+        printBoard(boardGiant,parsedGiant,"giant board + return to source");
+        runAlgorithmsOnBoard(boardGiant, "giant board + return to source", true);
 
 //        BDijkstra dijkstra = new BDijkstra();
 //        Telemetry teleDijk = runPathfinder(dijkstra, boardGiant, 0, "giant", false);
@@ -123,7 +133,6 @@ public class BMain {
             }
             source= (int) stars.get(i);
         }
-        System.out.println(board.itemCount+" "+ board.amountOfNodes+" "+AStar.nodesUnchecked);
         int nodesExplored= board.itemCount* (AStar.nodesUnchecked);
         if(shouldReturnToSource){
             DLinkedList temp=aStar.runAStar((int)path.get(path.size()-1),
