@@ -1,4 +1,5 @@
 public class AStar{
+    public static int nodesUnchecked=0;
     public DLinkedList runAStar(int start, int end,
                                 DLinkedList[] adjecency,int colmSize){
         return aStar(start,end,adjecency,colmSize);
@@ -12,7 +13,8 @@ public class AStar{
     }
     private static DLinkedList aStar(int start, int end,
                               DLinkedList[] adjecency,int colmSize){
-        DLinkedList openList=new DLinkedList(); //nodes to be evaluated
+        DLinkedList openList=new DLinkedList();
+        nodesUnchecked= adjecency.length;//nodes to be evaluated
         openList.add(start);
         int size=adjecency.length;
         boolean[] alreadyChecked=new boolean[size];
@@ -33,6 +35,7 @@ public class AStar{
                 int neighbor = (int) adjecency[current].get(i);
                 if(!alreadyChecked[neighbor]){
                     if(!openList.contains(neighbor)){
+                        nodesUnchecked--;
                         openList.add(neighbor);
                         parent[neighbor]=current;
 

@@ -75,6 +75,7 @@ public class BMain {
         long startNanos = System.nanoTime();
         // When item i is found, itemVertices[i] is set to -1. Clone so we don't mutate the board's state.
         int[] remainingItems = board.itemVertices.clone();
+        int nodesExplored= board.itemCount* board.amountOfNodes;
 
         // Remove 0 from remaining items, in case we started on an item.
         arraySetKey(remainingItems, 0, -1);
@@ -95,11 +96,12 @@ public class BMain {
             localPath.pop();
             path.addAll(localPath);
             currentPosition = (int)path.getLast();
+            nodesExplored= (board.itemCount+1)* board.amountOfNodes;
         }
 
         long endNanos = System.nanoTime();
         long elapsedNanos = endNanos - startNanos;
-        Telemetry telemetry = new Telemetry(algorithm.getAlgorithmName(), boardName, path, elapsedNanos);
+        Telemetry telemetry = new Telemetry(algorithm.getAlgorithmName(), boardName, path, elapsedNanos,nodesExplored);
         return telemetry;
     }
     public static Telemetry runAStar(AStar aStar,ParseBoard board, int source, String boardName,
@@ -121,17 +123,21 @@ public class BMain {
             }
             source= (int) stars.get(i);
         }
+        System.out.println(board.itemCount+" "+ board.amountOfNodes+" "+AStar.nodesUnchecked);
+        int nodesExplored= board.itemCount* (AStar.nodesUnchecked);
         if(shouldReturnToSource){
-            DLinkedList temp=new DLinkedList();
-            for(int i= path.size()-2;i>=0;i--){
-                temp.add(path.get(i));
-            }
+            DLinkedList temp=aStar.runAStar((int)path.get(path.size()-1),
+                    0, board.adjecency,colmSize);
+//            for(int i= path.size()-2;i>=0;i--){
+//                temp.add(path.get(i));
+//            }
+            temp.pop();
             path.addAll(temp);
         }
 
         long endNanos = System.nanoTime();
         long elapsedNanos = endNanos - startNanos;
-        Telemetry telemetry = new Telemetry("A*", boardName, path, elapsedNanos);
+        Telemetry telemetry = new Telemetry("A*", boardName, path, elapsedNanos,nodesExplored);
         return telemetry;
     }
     public static DLinkedList pathfinderToNext(Pathfinder algorithm, ParseBoard board, int source,
