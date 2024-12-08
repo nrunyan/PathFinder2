@@ -133,7 +133,6 @@ public class BMain {
             }
             source= (int) stars.get(i);
         }
-        System.out.println(board.itemCount+" "+ board.amountOfNodes+" "+AStar.nodesUnchecked);
         int nodesExplored= board.itemCount* (AStar.nodesUnchecked);
         if(shouldReturnToSource){
             DLinkedList temp=aStar.runAStar((int)path.get(path.size()-1),
