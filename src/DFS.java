@@ -1,6 +1,4 @@
-import java.util.List;
-
-public class BDFS implements Pathfinder {
+public class DFS implements Pathfinder {
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;

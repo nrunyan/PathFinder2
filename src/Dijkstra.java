@@ -1,6 +1,4 @@
-import java.util.List;
-
-public class BDijkstra implements Pathfinder {
+public class Dijkstra implements Pathfinder {
 
     public String getAlgorithmName() {
         return "dijkstra";

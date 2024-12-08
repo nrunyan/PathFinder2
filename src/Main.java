@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class BMain {
+public class Main {
     public static void main(String[] args) {
         // Load all the boards
         char[][] parsedA = ReadConfig.parseFile("testCases2/caseA.txt");
@@ -34,10 +34,10 @@ public class BMain {
         printBoard(boardD,parsedD,"Case D: single item + return to source");
         String csvBoardDReturn = runAlgorithmsOnBoard(boardD, "Case D + return to source", true);
 
-        // Output csv data for reporting.
-//        String csv =
-//                csvBoardA + csvBoardB + csvBoardC + csvBoardD +
-//                csvBoardAReturn + csvBoardBReturn + csvBoardCReturn + csvBoardDReturn;
+        // CSV data, only used for reporting.
+        String csv =
+                csvBoardA + csvBoardB + csvBoardC + csvBoardD +
+                csvBoardAReturn + csvBoardBReturn + csvBoardCReturn + csvBoardDReturn;
 //        System.out.println(csv);
     }
     public static void printBoard(ParseBoard adj, char[][] board,
@@ -61,10 +61,10 @@ public class BMain {
     }
 
     public static String runAlgorithmsOnBoard(ParseBoard board, String boardName, boolean shouldReturnToSource) {
-        Pathfinder dfs = new BDFS();
-        Pathfinder bfs = new BBFS();
+        Pathfinder dfs = new DFS();
+        Pathfinder bfs = new BFS();
         Pathfinder prims = new Prim();
-        Pathfinder dijkstra = new BDijkstra();
+        Pathfinder dijkstra = new Dijkstra();
         AStar aStar=new AStar();
 
         Telemetry bfsResult = runPathfinder(bfs, board, 0, boardName, shouldReturnToSource);

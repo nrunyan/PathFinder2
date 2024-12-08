@@ -1,0 +1,2 @@
+To run the program, execute Main.java.
+The program will run all algorithms on all 4 test cases and output results to the terminal.
