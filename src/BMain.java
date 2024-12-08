@@ -12,15 +12,38 @@ public class BMain {
         ParseBoard boardGiant = new ParseBoard(parsedGiant);
 
         // Run each algorithm on each board and print performance summary
+        printBoard(boardA,parsedA,"case-a");
         runAlgorithmsOnBoard(boardA, "case-a", false);
+        printBoard(boardB,parsedB,"objectTest");
         runAlgorithmsOnBoard(boardB, "objectTest", false);
+        printBoard(boardB,parsedB,"objectTest + return to source");
         runAlgorithmsOnBoard(boardB, "objectTest + return to source", true);
+        printBoard(boardGiant,parsedGiant,"giant board");
         runAlgorithmsOnBoard(boardGiant, "giant board", false);
 
 //        BDijkstra dijkstra = new BDijkstra();
 //        Telemetry teleDijk = runPathfinder(dijkstra, boardGiant, 0, "giant", false);
 //        System.out.print(teleDijk.summarize());
         int test = 3 * 13;
+    }
+    public static void printBoard(ParseBoard adj, char[][] board,
+                                  String testCase){
+        System.out.println(testCase);
+       int row = board.length;
+       int col = board[0].length;
+       int current = 0;
+       for (int r = 0;r<row;r++){
+           for(int c = 0;c<col;c++){
+               System.out.print(board[r][c]+"  ");
+           }
+           System.out.print(" ");
+           for(int c = 0;c<col;c++){
+               System.out.printf("%2d ",current);
+               current++;
+           }
+           System.out.println("");
+       }
+        System.out.println("");
     }
 
     public static void runAlgorithmsOnBoard(ParseBoard board, String boardName, boolean shouldReturnToSource) {
