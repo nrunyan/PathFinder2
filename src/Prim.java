@@ -53,7 +53,7 @@ public class Prim implements Pathfinder {
         return minIndex;
     }
     public static void main(String[] args) {
-        char[][] board = ReadConfig.parseFile("testCases/baseTest.txt");
+        char[][] board = ReadConfig.parseFile("testCases/caseA.txt");
         ParseBoard parseBoard = new ParseBoard(board);
         char[] characters = new char[parseBoard.amountOfNodes];
         int count =0;

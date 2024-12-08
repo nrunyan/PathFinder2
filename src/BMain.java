@@ -1,40 +1,44 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class BMain {
     public static void main(String[] args) {
-
-        // TODO Print boards with node labels
-
         // Load all the boards
-        char[][] parsedA = ReadConfig.parseFile("testCases/baseTest.txt");
-        char[][] parsedB = ReadConfig.parseFile("./testCases/objectTest.txt");
-        char[][] parsedEmpty = ReadConfig.parseFile("testCases/emptyTest.txt");
-        char[][] parsedGiant = ReadConfig.parseFile("./testCases/giantTest.txt");
+        char[][] parsedA = ReadConfig.parseFile("testCases2/caseA.txt");
+        char[][] parsedB = ReadConfig.parseFile("testCases2/caseB.txt");
+        char[][] parsedC = ReadConfig.parseFile("testCases2/caseC.txt");
+        char[][] parsedD = ReadConfig.parseFile("testCases2/caseD.txt");
         ParseBoard boardA = new ParseBoard(parsedA);
         ParseBoard boardB = new ParseBoard(parsedB);
-        ParseBoard boardEmpty = new ParseBoard(parsedEmpty);
-        ParseBoard boardGiant = new ParseBoard(parsedGiant);
+        ParseBoard boardC = new ParseBoard(parsedC);
+        ParseBoard boardD = new ParseBoard(parsedD);
 
         // Run each algorithm on each board and print performance summary
-        printBoard(boardA,parsedA,"lot of items case");
-        runAlgorithmsOnBoard(boardA, "lot of items case", false);
-        printBoard(boardA,parsedA,"lot of items case + return to source");
-        runAlgorithmsOnBoard(boardA,"lot of items case + return to source",true);
-        printBoard(boardB,parsedB,"objectTest");
-        runAlgorithmsOnBoard(boardB, "objectTest", false);
-        printBoard(boardB,parsedB,"objectTest + return to source");
-        runAlgorithmsOnBoard(boardB, "objectTest + return to source", true);
-        printBoard(boardEmpty,parsedEmpty,"empty board");
-        runAlgorithmsOnBoard(boardEmpty, "empty board", false);
-        printBoard(boardEmpty,parsedEmpty,"empty board + return to source");
-        runAlgorithmsOnBoard(boardEmpty, "empty board + return to source", true);
-        printBoard(boardGiant,parsedGiant,"giant board");
-        runAlgorithmsOnBoard(boardGiant, "giant board", false);
-        printBoard(boardGiant,parsedGiant,"giant board + return to source");
-        runAlgorithmsOnBoard(boardGiant, "giant board + return to source", true);
+        printBoard(boardA,parsedA,"Case A: no obstacles, many items");
+        String csvBoardA = runAlgorithmsOnBoard(boardA, "Case A", false);
+        printBoard(boardA,parsedA,"Case A: no obstacles, many items +  return to source");
+        String csvBoardAReturn = runAlgorithmsOnBoard(boardA,"Case A + return to source",true);
 
-//        BDijkstra dijkstra = new BDijkstra();
-//        Telemetry teleDijk = runPathfinder(dijkstra, boardGiant, 0, "giant", false);
-//        System.out.print(teleDijk.summarize());
-        int test = 3 * 13;
+        printBoard(boardB,parsedB,"Case B: multiple obstacles, fewer items");
+        String csvBoardB = runAlgorithmsOnBoard(boardB, "Case B", false);
+        printBoard(boardB,parsedB,"Case B: multiple obstacles, fewer items + return to source");
+        String csvBoardBReturn = runAlgorithmsOnBoard(boardB, "Case B + return to source", true);
+
+        printBoard(boardC,parsedC,"Case C: complex grid");
+        String csvBoardC = runAlgorithmsOnBoard(boardC, "Case C", false);
+        printBoard(boardC,parsedC,"Case C: complex grid + return to source");
+        String csvBoardCReturn = runAlgorithmsOnBoard(boardC, "Case C + return to source", true);
+
+        printBoard(boardD,parsedD,"Case D: single item");
+        String csvBoardD = runAlgorithmsOnBoard(boardD, "Case D", false);
+        printBoard(boardD,parsedD,"Case D: single item + return to source");
+        String csvBoardDReturn = runAlgorithmsOnBoard(boardD, "Case D + return to source", true);
+
+        // Output csv data for reporting.
+//        String csv =
+//                csvBoardA + csvBoardB + csvBoardC + csvBoardD +
+//                csvBoardAReturn + csvBoardBReturn + csvBoardCReturn + csvBoardDReturn;
+//        System.out.println(csv);
     }
     public static void printBoard(ParseBoard adj, char[][] board,
                                   String testCase){
@@ -56,7 +60,7 @@ public class BMain {
         System.out.println("");
     }
 
-    public static void runAlgorithmsOnBoard(ParseBoard board, String boardName, boolean shouldReturnToSource) {
+    public static String runAlgorithmsOnBoard(ParseBoard board, String boardName, boolean shouldReturnToSource) {
         Pathfinder dfs = new BDFS();
         Pathfinder bfs = new BBFS();
         Pathfinder prims = new Prim();
@@ -79,7 +83,12 @@ public class BMain {
         System.out.print(aStarResult.summarize());
         System.out.print('\n');
 
+        // NOTE: this is used only to generate data for reporting.
+        ArrayList<Telemetry> teles = new ArrayList<>(Arrays.asList(bfsResult, dfsResult, primResult, dijkstraResult
+                , aStarResult));
+        return telesToCSV(teles);
     }
+
     public static Telemetry runPathfinder(Pathfinder algorithm, ParseBoard board, int source, String boardName,
                                           boolean shouldReturnToSource) {
         long startNanos = System.nanoTime();
@@ -179,6 +188,18 @@ public class BMain {
         return path;
     }
 
+    public static void testHugeBoard() {
+        // Test memory limits with 192 x 192 board (> 36,000 nodes)
+        char[][] parsedE = ReadConfig.parseFile("testCases2/giantMemoryTest.txt");
+        ParseBoard boardE = new ParseBoard(parsedE);
+
+        // Test memory limits with huge board
+        printBoard(boardE,parsedE,"Case E: huge board");
+        String csvBoardE = runAlgorithmsOnBoard(boardE, "Case E", false);
+        printBoard(boardE,parsedE,"Case E: huge board + return to source");
+        String csvBoardEReturn = runAlgorithmsOnBoard(boardE, "Case E + return to source", true);
+    }
+
     public static boolean arrayHasKey(int[] array, int key) {
         for (int i : array) {
             if (i == key) {
@@ -221,4 +242,13 @@ public class BMain {
         return path;
     }
 
+
+    public static String telesToCSV(ArrayList<Telemetry> teles) {
+        // NOTE: this is used only for generating report data.
+        StringBuilder csv = new StringBuilder();
+        for (Telemetry tele : teles) {
+            csv.append(tele.toCSVRow());
+        }
+        return csv.toString();
+    }
 }

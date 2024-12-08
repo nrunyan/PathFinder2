@@ -72,7 +72,7 @@ public class AStar{
     }
 
     public static void main(String [] args){
-        char [][] board= ReadConfig.parseFile("testCases/emptyTest.txt");
+        char [][] board= ReadConfig.parseFile("testCases/caseD.txt");
         DLinkedList stars =new DLinkedList();
         stars.add(3);
         stars.add(7);

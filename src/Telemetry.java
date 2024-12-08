@@ -32,4 +32,15 @@ public class Telemetry {
         }
         return result.toString();
     }
+
+    public String toCSVRow() {
+        // NOTE: this is used only to generate data for reporting.
+        StringBuilder row = new StringBuilder();
+        row.append(algorithmName + ", ");
+        row.append(boardName + ", ");
+        row.append(String.valueOf(path.size()) + ", ");
+        row.append(runtimeNanos + ", ");
+        row.append(nodesExplored + "\n");
+        return row.toString();
+    }
 }
